@@ -2,10 +2,9 @@ from importlib import import_module
 from pkgutil import iter_modules
 
 
-def build(cli,
-          path=__path__,
-          package=__package__):
-    """Build CLI dynamically based on submodules."""
+def build(cli, path, package):
+    """Build CLI dynamically based on the package structure.
+    """
     for _, name, ispkg in iter_modules(path):
         module = import_module(f'.{name}', package)
         if ispkg:

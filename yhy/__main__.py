@@ -1,6 +1,6 @@
 import click
 
-from yhy.commands import build
+from yhy import commands
 
 
 @click.group()
@@ -8,7 +8,9 @@ def cli():
     pass
 
 
-build(cli)
+commands.build(cli,
+               commands.__path__,
+               commands.__package__)
 
 
 if __name__ == '__main__':
