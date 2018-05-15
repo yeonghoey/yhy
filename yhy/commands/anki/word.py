@@ -1,4 +1,3 @@
-from io import BytesIO
 import os
 import re
 import sys
@@ -22,7 +21,6 @@ LOOKUPS = [
 @click.option('-q', '--quiet', '--no-lookup', is_flag=True)
 @click.argument('words', nargs=-1)
 def command(anki_media, no_lookup, words):
-
     filenames = []
     for w in words:
         word = w.lower()
@@ -48,19 +46,13 @@ def lookup(word):
 
 
 def voice_of(word):
-    page_source = fetch_endic_naver(word)
-    voice_url = extract_voice_url(page_source)
-    return  make_request(voice_url)
-
-
-def voice_of(word):
     url = 'http://endic.naver.com/search.nhn?sLn=en&query={}'.format(word)
     page_source = make_request(url).decode('utf-8')
 
     mo = re.search(r'playlist="([^"]+)"', page_source)
     if mo:
         voice_url = mo.group(1)
-        return  make_request(voice_url)
+        return make_request(voice_url)
     else:
         errexit("Unable to find voice for '%s'" % word)
 
