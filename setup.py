@@ -34,6 +34,8 @@ setup(
 
     install_requires=[
         'Click',
+        'pyperclip',
+        'requests'
     ],
 
     classifiers=[
