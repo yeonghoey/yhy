@@ -34,6 +34,7 @@ setup(
 
     install_requires=[
         'Click',
+        'pillow',
         'pyperclip',
         'requests'
     ],
