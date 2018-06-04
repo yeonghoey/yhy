@@ -1,7 +1,6 @@
 from pathlib import Path
 
 
-def directory(path, isdir=False):
-    p = (Path(path) if isdir else
-         Path(path).parent)
+def directory(path):
+    p = Path(path)
     p.mkdir(parents=True, exist_ok=True)
