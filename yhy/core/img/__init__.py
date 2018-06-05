@@ -10,16 +10,18 @@ def clipboard_img(half=False):
     if img is None:
         raise click.UsageError('Clipboard does not contain image data')
 
+    # NOTE: Calcuate hash before modification like scaling down.
+    # This is because the pasting image should be unique as a capture process,
+    # not as a resulting image.
+    ho = sha1()
+    ho.update(img.tobytes())
+    hexhash = ho.hexdigest()
+
     if half:
         img = scaled(img, 0.5)
 
-    return img
+    return (img, hexhash)
 
-
-def hexhash(img):
-    ho = sha1()
-    ho.update(img.tobytes())
-    return ho.hexdigest()
 
 def save(img, path):
     img.save(path)
