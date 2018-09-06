@@ -15,12 +15,13 @@ def command(anki_media):
     speak = make_speak()
     while True:
         text = session.prompt('TTS > ')
+        text = text.strip()
         sound, ext = speak(text)
         path = path_for(anki_media, sound, ext)
         write(path, sound)
         sl = soundlink(path)
         print(sl)
-        copy(sl)
+        copy(f'{text}\n{sl}')
         play(path)
 
 
