@@ -34,6 +34,7 @@ setup(
 
     install_requires=[
         'Click',
+        'google-cloud-texttospeech',
         'pillow',
         'pyperclip',
         'requests'
