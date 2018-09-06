@@ -4,14 +4,17 @@ import random
 
 import click
 from google.cloud import texttospeech
+from prompt_toolkit import PromptSession
+
 import pyperclip
 
 
 @click.option('--anki-media', envvar='ANKI_MEDIA')
 def command(anki_media):
+    session = PromptSession()
     speak = make_speak()
     while True:
-        text = input(f'TTS > ')
+        text = session.prompt('TTS > ')
         sound, ext = speak(text)
         path = path_for(anki_media, sound, ext)
         write(path, sound)
