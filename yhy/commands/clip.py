@@ -5,7 +5,6 @@ import pyperclip
 
 
 def command():
-    text = ''.join(l for l in sys.stdin)
-    text = text.strip()
+    text = sys.stdin.read().strip()
     pyperclip.copy(text)
     click.echo(text)
