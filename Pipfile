@@ -7,9 +7,10 @@ name = "pypi"
 yhy = {editable = true, path = "."}
 
 [dev-packages]
-twine = "*"
-keyring = "*"
 "flake8" = "*"
+keyring = "*"
+requests = ">=2.20.0"
+twine = "*"
 
 [requires]
 python_version = "3.6"
