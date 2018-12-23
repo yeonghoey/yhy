@@ -1,4 +1,7 @@
 from hashlib import sha1
+import subprocess
+import sys
+from tempfile import NamedTemporaryFile
 
 import click
 from PIL import ImageGrab
@@ -26,6 +29,18 @@ def clipboard_img(half=False):
 
 def save(img, path):
     img.save(path)
+
+
+def copy(img):
+    if sys.platform == 'darwin':
+        with NamedTemporaryFile(suffix='.png') as f:
+            img.save(f.name)
+            subprocess.run([
+                'osascript', '-e',
+                f'set the clipboard to (read "{f.name}" as TIFF picture)'])
+    else:
+        raise click.UsageError('Supports macOS only')
+
 
 
 def scaled(img, s):
