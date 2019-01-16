@@ -9,16 +9,14 @@ import requests
 URL = 'https://www.acmicpc.net/problem/%s'
 
 
-@click.argument('problem-id')
-def command(problem_id):
+def command():
+    problem_dir = Path.cwd()
+    problem_id = problem_dir.name
+
     url = URL % problem_id
     response = requests.get(url)
     if not response.ok:
         raise click.BadParameter('Cannot find the problem')
-
-    problem_dir = Path.cwd()
-    if problem_dir.name != problem_id:
-        problem_dir = problem_dir / problem_id
 
     problem_dir.mkdir(parents=True, exist_ok=True)
     samples = []
