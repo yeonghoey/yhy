@@ -4,13 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-yhy = {editable = true, path = "."}
+yhy = {editable = true,path = "."}
 
 [dev-packages]
 "flake8" = "*"
 keyring = "*"
 requests = ">=2.20.0"
 twine = "*"
+lxml = "*"
 
 [requires]
 python_version = "3.6"

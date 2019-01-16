@@ -36,6 +36,7 @@ setup(
         'Click',
         'google-cloud-texttospeech',
         'google-cloud-vision',
+        'lxml',
         'pillow',
         'prompt_toolkit',
         'pyperclip',
