@@ -8,39 +8,8 @@ import requests
 
 URL = 'https://www.acmicpc.net/problem/%s'
 
-
-def command():
-    problem_dir = Path.cwd()
-    problem_id = problem_dir.name
-
-    url = URL % problem_id
-    response = requests.get(url)
-    if not response.ok:
-        raise click.BadParameter('Cannot find the problem')
-
-    problem_dir.mkdir(parents=True, exist_ok=True)
-    samples = []
-    root = html.document_fromstring(response.text)
-    for e in root.find_class('sampledata'):
-        base = '%s.txt' % e.get('id')
-        samples.append(base)
-        path = problem_dir / base
-        with open(path, 'w') as f:
-            f.write(e.text)
-        click.echo(path)
-
-    lines = []
-    for input, output in zip(samples[0::2], samples[1::2]):
-        lines.append('\t\t{"%s", "%s"},' % (input, output))
-    samples = '\n'.join(lines)
-    content = MAIN_TEST_GO.substitute(samples=samples)
-    test_path = problem_dir / 'main_test.go'
-    with open(test_path, 'w') as f:
-        f.write(content)
-    click.echo(test_path)
-
-
-MAIN_TEST_GO = Template('''
+TEST_NAME = 'main_test.go'
+TEST_TEMPLATE = Template('''
 package main
 
 import (
@@ -61,3 +30,34 @@ ${samples}
 	}
 }
 '''.strip())
+
+
+def command():
+    problem_dir = Path.cwd()
+    problem_id = problem_dir.name
+
+    url = URL % problem_id
+    response = requests.get(url)
+    if not response.ok:
+        raise click.BadParameter('Cannot find the problem: "%s"' % problem_id)
+
+    problem_dir.mkdir(parents=True, exist_ok=True)
+    samples = []
+    root = html.document_fromstring(response.text)
+    for e in root.find_class('sampledata'):
+        base = '%s.txt' % e.get('id')
+        samples.append(base)
+        path = problem_dir / base
+        with open(path, 'w') as f:
+            f.write(e.text)
+        click.echo(base)
+
+    lines = []
+    for input, output in zip(samples[0::2], samples[1::2]):
+        lines.append('\t\t{"%s", "%s"},' % (input, output))
+    samples = '\n'.join(lines)
+    content = TEST_TEMPLATE.substitute(samples=samples)
+    test_path = problem_dir / TEST_NAME
+    with open(test_path, 'w') as f:
+        f.write(content)
+    click.echo(TEST_NAME)
