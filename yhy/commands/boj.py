@@ -16,7 +16,10 @@ def command(problem_id):
     if not response.ok:
         raise click.BadParameter('Cannot find the problem')
 
-    problem_dir = Path('./%s' % problem_id)
+    problem_dir = Path.cwd()
+    if problem_dir.name != problem_id:
+        problem_dir = problem_dir / problem_id
+
     problem_dir.mkdir(parents=True, exist_ok=True)
     samples = []
     root = html.document_fromstring(response.text)
