@@ -18,15 +18,15 @@ import (
 	"github.com/yeonghoey/boj/runner"
 )
 
-func TestSamples(t *testing.T) {
+func TestMain(t *testing.T) {
 	r := runner.New(t, "go", "run", ".")
-	samples := []struct {
+	cases := []struct {
 		intput, output string
 	}{
 ${samples}
 	}
-	for _, s := range samples {
-		r.Run(s.intput).Want(s.output)
+	for _, c := range cases {
+		r.Run(c.intput).Want(c.output)
 	}
 }
 '''.strip())
