@@ -13,16 +13,20 @@ import pyperclip
 def command(anki_media):
     session = PromptSession()
     speak = make_speak()
+    last = ''
     while True:
         text = session.prompt('TTS > ')
         text = text.strip()
+        if not text:
+            if last:
+                text, path = last
+                copy_and_play(text, path)
+            continue
         sound, ext = speak(text)
         path = path_for(anki_media, sound, ext)
         write(path, sound)
-        sl = soundlink(path)
-        print(sl)
-        copy(f'{text}\n{sl}')
-        play(path)
+        copy_and_play(text, path)
+        last = (text, path)
 
 
 def make_speak():
@@ -66,6 +70,14 @@ def name_for(sound):
 def write(path, sound):
     with open(path, 'wb') as f:
         f.write(sound)
+
+
+def copy_and_play(text, path):
+    sl = soundlink(path)
+    print(sl)
+    copy(f'{text}\n{sl}')
+    last = path
+    play(path)
 
 
 def soundlink(path):
